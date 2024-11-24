@@ -139,8 +139,8 @@ app.get("/", (req, res) => {
 });
 
 // server start/listen on port specified in .env
-app.listen(port, () => {
-    console.log(`Server start on port no ${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server started on port no ${port}`);
 });
 
 // Catch-all route for handling React Router paths
