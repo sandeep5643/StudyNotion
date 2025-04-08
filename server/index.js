@@ -28,10 +28,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin:["http://localhost:3000","*"], // Is frontend ko request allow karega
-		credentials:true, // Cookies aur headers allow honge
+	  origin: ["http://localhost:3000", "https://study-notion-u9jz-iota.vercel.app"],
+	  credentials: true,
 	})
-)
+  );
+  
 
 app.use(
 	fileUpload({
