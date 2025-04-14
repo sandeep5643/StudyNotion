@@ -12,7 +12,6 @@ import {
   setTotalNoOfLectures,
 } from "../slices/viewCourseSlice"
 
-
 export default function ViewCourse() {
   const { courseId } = useParams()
   const { token } = useSelector((state) => state.auth)
@@ -34,16 +33,37 @@ export default function ViewCourse() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
   return (
     <>
-      <div className="relative flex min-h-[calc(100vh-3.5rem)]">
-        <VideoDetailsSidebar setReviewModal={setReviewModal} />
-        <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto">
-          <div className="mx-6">
+      <div className="relative flex min-h-[calc(100vh-3.5rem)] flex-col md:flex-row">
+        {/* Sidebar Overlay for Mobile */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-black bg-opacity-50 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <div
+          
+        >
+          <VideoDetailsSidebar setReviewModal={setReviewModal} />
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 h-[calc(100vh-3.5rem)] overflow-auto">
+          <div className="px-4 py-3 md:px-6">
+            {/* Mobile Toggle Button */}
+            
+            {/* Main content */}
             <Outlet />
           </div>
         </div>
       </div>
+
       {reviewModal && <CourseReviewModal setReviewModal={setReviewModal} />}
     </>
   )

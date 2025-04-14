@@ -31,45 +31,51 @@ const timeline = [
 
 
 const TimelineSection = () => {
-  return (
-    <div>
-      <div className='flex flex-row gap-15 items-center'>
-        <div className='w-[45%] flex flex-col gap-5'>
-            {
-                timeline.map((element, index) => {
-                    return(
-                        <div className='flex flex-row gap-6' key={index}>
-                            <div className='w-[50px] h-[50px] bg-white flex items-center'>
-                                <img src={element.Logo} />
-                            </div>
-
-                            <div>
-                                <h2 className='font-semibold text-[18px]'>{element.heading}</h2>
-                                <p className='text-base'>{element.Description}</p>
-                            </div>
-                        </div>
-                    )
-                })
-            }
-        </div>
-
-        <div className='relative shadow-blue-200'>
-            <img src={timelineImage} alt="timelineImage" className='shadow-white object-cover h-fit'/>
-            <div className='absolute bg-caribbeangreen-700 flex flex-row text-white uppercase py-7 left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                <div className='flex flex-row gap-5 items-center border-r border-caribbeangreen-300 px-7'>
-                    <p className='text-3xl font-bold'>10</p>
-                    <p className='text-caribbeangreen-300 text-sm'>Years of Experience</p>
-                </div>
-
-                <div className='flex gap-5 items-center px-7'>
-                    <p className='text-3xl font-bold'>250</p>
-                    <p className='text-caribbeangreen-300 text-sm'>Type of Courses</p>
-                </div>
+    return (
+        <div className="px-4 py-10">
+          <div className="flex flex-col lg:flex-row gap-10 items-center justify-between">
+            {/* Left Timeline Details */}
+            <div className="w-full lg:w-[45%] flex flex-col gap-6">
+              {timeline.map((element, index) => {
+                return (
+                  <div className="flex flex-row gap-6 items-start" key={index}>
+                    <div className="w-[50px] h-[50px] bg-white flex items-center justify-center rounded-full shadow-md">
+                      <img src={element.Logo} className="w-[60%] h-[60%]" />
+                    </div>
+      
+                    <div>
+                      <h2 className="font-semibold text-[18px] text-richblack-5">
+                        {element.heading}
+                      </h2>
+                      <p className="text-base text-richblack-300">{element.Description}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+      
+            {/* Right Image & Stats Box */}
+            <div className="relative w-full lg:w-[50%]">
+              <img
+                src={timelineImage}
+                alt="timeline"
+                className="shadow-white object-cover w-full h-auto max-h-[500px] rounded-md"
+              />
+              <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-caribbeangreen-700 text-white uppercase flex flex-col md:flex-row py-6 rounded-md shadow-lg">
+                <div className="flex gap-4 items-center border-b md:border-b-0 md:border-r border-caribbeangreen-300 px-6 py-2">
+                  <p className="text-3xl font-bold">10</p>
+                  <p className="text-caribbeangreen-300 text-sm">Years of Experience</p>
+                </div>
+                <div className="flex gap-4 items-center px-6 py-2">
+                  <p className="text-3xl font-bold">250</p>
+                  <p className="text-caribbeangreen-300 text-sm">Type of Courses</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  )
+      );
+      
 }
 
 export default TimelineSection

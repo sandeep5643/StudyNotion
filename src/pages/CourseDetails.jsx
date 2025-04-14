@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buyCourse } from '../services/operations/studentFeaturesAPI';
@@ -14,15 +14,22 @@ import ReactMarkdown from "react-markdown";
 import Footer from "../components/common/Footer"
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar"
 import CourseDetailsCard from '../components/core/Course/CourseDetailsCard';
-
+import toast from 'react-hot-toast';
+import { addToCart } from '../slices/cartSlice';
+import { ACCOUNT_TYPE } from '../utlis/constants';
+import { BsFillCaretRightFill } from 'react-icons/bs';
+import { FaShareSquare } from 'react-icons/fa';
+import copy from 'copy-to-clipboard';
 
 
 const CourseDetails = () => {
 
+    const isAdded = useRef(false)
     const {user} = useSelector((state)=>state.profile);
     const {token} = useSelector((state)=>state.auth);
     const {loading} = useSelector((state) => state.profile);
     const {paymentLoading} = useSelector((state)=> state.course);
+    // const course = useSelector((state) => state.course)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {courseId}  = useParams();
@@ -97,11 +104,20 @@ const CourseDetails = () => {
     createdAt,
   } = response.data?.courseDetails
 
+  const course = response.data?.courseDetails
+
+
   const handleBuyCourse = () => {
+    if (user?.accountType === "Instructor") {
+      toast.error("Instructors can't buy courses")
+      return
+    }
+
     if (token) {
       buyCourse(token, [courseId], user, navigate, dispatch)
       return
     }
+
     setConfirmationModal({
       text1: "You are not logged in!",
       text2: "Please login to Purchase Course.",
@@ -111,6 +127,36 @@ const CourseDetails = () => {
       btn2Handler: () => setConfirmationModal(null),
     })
   }
+
+
+  const handleAddToCart = () => {
+    if (isAdded.current) return; // pehle hi add ho chuka hai
+    isAdded.current = true;
+
+    if(user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
+        toast.error("You are an Instructor, you cant buy a course");
+        return;
+    }
+    if(token) {
+        dispatch(addToCart(course));
+        return;
+    }
+    setConfirmationModal({
+        text1:"you are not logged in",
+        text2:"Please login to add to cart",
+        btn1text:"login",
+        btn2Text:"cancel",
+        btn1Handler:()=>navigate("/login"),
+        btn2Handler: ()=> setConfirmationModal(null),
+    })
+  }
+
+  const handleShare = () => {
+    copy(window.location.href);
+    toast.success("Link Copied to Clipboard")
+  }
+
+
 
   if (paymentLoading) {
     return (
@@ -166,15 +212,62 @@ const CourseDetails = () => {
                 </p>
               </div>
             </div>
-            <div className="flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden">
-              <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">
-                Rs. {price}
-              </p>
-              <button className="yellowButton" onClick={handleBuyCourse}>
-                Buy Now
-              </button>
-              <button className="blackButton">Add to Cart</button>
-            </div>
+              <div className="flex w-full flex-col gap-2 border-y border-y-richblack-500 py-4 lg:hidden">
+                <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">
+                  Rs. {price}
+                </p>
+                <button
+                  className="yellowButton"
+                  onClick={
+                    user && course?.studentsEnrolled.includes(user?._id)
+                      ? () => navigate("/dashboard/enrolled-courses")
+                      : handleBuyCourse
+                  }
+                >
+                  {user && course?.studentsEnrolled.includes(user?._id)
+                    ? "Go To Course"
+                    : "Buy Now"}
+                </button>
+                {(!user || !course?.studentsEnrolled.includes(user?._id)) && (
+                  <button onClick={handleAddToCart} className="blackButton">
+                    Add to Cart
+                  </button>
+                )}
+
+                <div>
+                  <p className="pb-3 pt-6 text-center text-sm text-richblack-25">
+                    30-Day Money-Back Guarantee
+                  </p>
+                </div>
+
+                <div className={``}>
+                  <p className={`my-2 text-xl font-semibold text-white`}>
+                    This Course Includes :
+                  </p>
+                  <div className="flex flex-col gap-3 text-sm text-caribbeangreen-100">
+                    {course?.instructions?.map((item, i) => {
+                      return (
+                        <p className={`flex gap-2`} key={i}>
+                          <BsFillCaretRightFill />
+                          <span>{item}</span>
+                        </p>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <button
+                    className="mx-auto flex items-center gap-2 py-6 text-yellow-100 "
+                    onClick={handleShare}
+                  >
+                    <FaShareSquare size={15} /> Share
+                  </button>
+                </div>
+                  
+                {/* <button className="blackButton">Add to Cart</button> */}
+              
+              </div>
           </div>
           {/* Courses Card */}
           <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute  lg:block">

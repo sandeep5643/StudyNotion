@@ -56,43 +56,45 @@ function Catalog() {
   return (
     <>
       {/* Hero Section */}
-      <div className=" box-content bg-richblack-800 px-4">
-        <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
-          <p className="text-sm text-richblack-300">
+      <div className="box-content bg-richblack-800 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 py-8 lg:max-w-maxContent">
+          <p className="text-xs sm:text-sm text-richblack-300">
             {`Home / Catalog / `}
             <span className="text-yellow-25">
               {catalogPageData?.data?.selectedCategory?.name}
             </span>
           </p>
-          <p className="text-3xl text-richblack-5">
+          <p className="text-2xl sm:text-3xl text-richblack-5">
             {catalogPageData?.data?.selectedCategory?.name}
           </p>
-          <p className="max-w-[870px] text-richblack-200">
+          <p className="text-sm sm:text-base max-w-[870px] text-richblack-200">
             {catalogPageData?.data?.selectedCategory?.description}
           </p>
         </div>
       </div>
-
+  
       {/* Section 1 */}
-      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-        <div className="section_heading">Courses to get you started</div>
-        <div className="my-4 flex border-b border-b-richblack-600 text-sm">
+      <div className="mx-auto box-content w-full max-w-maxContentTab px-4 sm:px-6 lg:px-8 py-12 lg:max-w-maxContent">
+        <div className="section_heading text-lg sm:text-xl md:text-2xl">
+          Courses to get you started
+        </div>
+        <div className="my-4 flex flex-wrap gap-4 border-b border-b-richblack-600 text-sm">
           <p
-            className={`px-4 py-2 ${
+            className={`px-3 py-2 cursor-pointer ${
               active === 1
                 ? "border-b border-b-yellow-25 text-yellow-25"
                 : "text-richblack-50"
-            } cursor-pointer`}
+            }`}
             onClick={() => setActive(1)}
           >
-            Most Populer
+            Most Popular
           </p>
           <p
-            className={`px-4 py-2 ${
+            className={`px-3 py-2 cursor-pointer ${
               active === 2
                 ? "border-b border-b-yellow-25 text-yellow-25"
                 : "text-richblack-50"
-            } cursor-pointer`}
+            }`}
             onClick={() => setActive(2)}
           >
             New
@@ -104,10 +106,14 @@ function Catalog() {
           />
         </div>
       </div>
+  
       {/* Section 2 */}
-      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-        <div className="section_heading">
-          Top courses in {catalogPageData?.data?.differentCategory?.name}
+      <div className="mx-auto box-content w-full max-w-maxContentTab px-4 sm:px-6 lg:px-8 py-12 lg:max-w-maxContent">
+        <div className="section_heading text-lg sm:text-xl md:text-2xl">
+          Top courses in{" "}
+          <span className="text-yellow-25">
+            {catalogPageData?.data?.differentCategory?.name}
+          </span>
         </div>
         <div className="py-8">
           <Course_Slider
@@ -115,12 +121,14 @@ function Catalog() {
           />
         </div>
       </div>
-
+  
       {/* Section 3 */}
-      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-        <div className="section_heading">Frequently Bought</div>
+      <div className="mx-auto box-content w-full max-w-maxContentTab px-4 sm:px-6 lg:px-8 py-12 lg:max-w-maxContent">
+        <div className="section_heading text-lg sm:text-xl md:text-2xl">
+          Frequently Bought
+        </div>
         <div className="py-8">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {catalogPageData?.data?.mostSellingCourses
               ?.slice(0, 4)
               .map((course, i) => (
@@ -129,10 +137,13 @@ function Catalog() {
           </div>
         </div>
       </div>
-
-      <Footer />
+  
+      <div className="mt-8">
+        <Footer />
+      </div>
     </>
-  )
+  );
+  
 }
 
 export default Catalog

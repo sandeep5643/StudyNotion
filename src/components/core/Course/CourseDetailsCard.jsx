@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
@@ -27,26 +27,31 @@ function CourseDetailsCard({course, setConfirmationModal, handleBuyCourse}) {
     }
 
 
-    const handleAddToCart = () => {
-        if(user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
-            toast.error("You are an Instructor, you cant buy a course");
-            return;
-        }
-        if(token) {
-            dispatch(addToCart(course));
-            return;
-        }
-        setConfirmationModal({
-            text1:"you are not logged in",
-            text2:"Please login to add to cart",
-            btn1text:"login",
-            btn2Text:"cancel",
-            btn1Handler:()=>navigate("/login"),
-            btn2Handler: ()=> setConfirmationModal(null),
-        })
-    }
+    const isAdded = useRef(false)
 
-    
+  const handleAddToCart = () => {
+    if (isAdded.current) return; // pehle hi add ho chuka hai
+    isAdded.current = true;
+
+    if(user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
+        toast.error("You are an Instructor, you cant buy a course");
+        return;
+    }
+    if(token) {
+        dispatch(addToCart(course));
+        return;
+    }
+    setConfirmationModal({
+        text1:"you are not logged in",
+        text2:"Please login to add to cart",
+        btn1text:"login",
+        btn2Text:"cancel",
+        btn1Handler:()=>navigate("/login"),
+        btn2Handler: ()=> setConfirmationModal(null),
+    })
+  }
+
+      
     return (
         <>
           <div
