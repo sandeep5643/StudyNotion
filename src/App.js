@@ -44,7 +44,7 @@ function App() {
         <Route path="/signup" element={<OpenRoute> <Signup /> </OpenRoute>}/>
         <Route path="/login" element={<OpenRoute> <Login /> </OpenRoute>}/>
         <Route path="/forgot-password" element={<OpenRoute> <ForgotPassword /> </OpenRoute>}/>
-        <Route path="/update-password/:id" element={<OpenRoute> <UpdatePassword/> </OpenRoute>} />
+        <Route path="/update-password/:id" element={<UpdatePassword />} />
         <Route path="/verify-email" element={<OpenRoute> <VerifyEmail/> </OpenRoute>} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
