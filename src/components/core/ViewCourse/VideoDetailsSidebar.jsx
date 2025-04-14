@@ -51,7 +51,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   return (
     <>
       {/* Hamburger menu for small screens */}
-      <div className="md:hidden fixed top-4 left-4 z-10 mt-16">
+      <div className="md:hidden fixed top-4 left-4 z-auto mt-16">
         <button
           onClick={() => setIsSidebarOpen(true)}
           className="mb-3 items-center gap-1 flex rounded bg-yellow-100 px-4 py-2 text-sm font-semibold text-white"
